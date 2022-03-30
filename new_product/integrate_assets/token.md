@@ -1,11 +1,11 @@
 <h1 align="center">Importing Tokens</h1>
 
-As for importing tokens, here are four steps listed for you.
+To import tokens, there are four steps to follow which are listed below.
 
 
 ### Step1. Asset deployment
 - Deploy mapping contracts of the corresponding asset on the target chain using the [template](https://github.com/polynetwork/eth-contracts/blob/master/contracts/core/assets/erc20_template/ERC20Template.sol). 
-- Ensure the total amount of contracts stays consistent with the amount on the source chain.
+- Ensure the total amount of contracts stay consistent with the amount on the source chain.
 
 ### Step2. Assets transfer
 - Transfer the initialized assets to the target chain [proxy contract](../../Core_Smart_Contract/Contract/LockProxy.md).

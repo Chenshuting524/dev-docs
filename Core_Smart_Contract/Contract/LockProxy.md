@@ -187,6 +187,6 @@
 
 ## Note  <a id="Note"></a>
 
-`B` means big-endian, we can search the contract transaction history in corresponding explorer.
+`B` stands for big-endian, we can search the contract transaction history in the corresponding explorer.
 
-`L` means little-endian, we usually use it as the asset hash input when we do binding asset hash operation.
+`L` stands for little-endian, we usually use it as the asset hash input when conducting a binding asset hash operation.
