@@ -1,4 +1,4 @@
-<h1 align="center">Guidelines for Developing</h1>
+<h1 align="center">Develop for Customized Contracts</h1>
 
 Chains must only be deployed with one CCM contract to implement cross-chain features. For normal running, all the business logic contracts have to interconnect with the CCM contract via the interfaces offered by the CCM contract. See the following for a detailed description or reference to the complete code of the CCM contract.
 
