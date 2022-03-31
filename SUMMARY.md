@@ -15,7 +15,7 @@
   * [Import Token](new_product/integrate_assets/token.md)
   * [Import NFT](new_product/integrate_assets/nft.md)
 * [Customize Business Logic Contracts](new_product/integrate_contracts/readme.md)
-  * [Guidelines for Developing](new_product/integrate_contracts/Customizing_Business_Logic_Contract.md)
+  * [Develop for Customized Contracts](new_product/integrate_contracts/Customizing_Business_Logic_Contract.md)
   * [Test and Launch](new_product/integrate_contracts/launch.md)
   
 ----
