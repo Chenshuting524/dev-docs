@@ -40,7 +40,7 @@ contract LockProxy is Ownable {
 }
 ```
 
-### Step2. Requesting transaction
+### Step2. Initiating transaction
 
 Now, you should complete a method to invoke the cross-chain function in the CCM. You can also see specifics in the [source code](https://dev-docs.poly.network/new_chain/side_chain/contracts.html#step3-pushing-transactions). 
 
@@ -102,7 +102,7 @@ function lock(address fromAssetHash, uint64 toChainId, bytes memory toAddress, u
 
 ### Step3. Verifying and executing
 
-You need to deploy a methods to parse and execut the transaction information transferred by `verifyHeaderAndExecuteTx()`. 
+- You need to deploy a methods to parse and execut the transaction information transferred by `verifyHeaderAndExecuteTx()`. 
 - `verifyHeaderAndExecuteTx()` in CCM contracts determines the **legitimacy** of cross-chain transaction information and resolves the parameters of transaction data from the Poly chain transaction Merkle proof and `crossStateRoot` contained in the block header. 
 
 ````solidity
@@ -152,4 +152,4 @@ function unlock(bytes memory argsBs, bytes memory fromContractAddr, uint64 fromC
 ```
 
 
-- Call the function `unlock()` to deserialize the transaction data, transfer a certain amount of token to the target address on the target chain, and complete the cross-chain contract invocation.
+- Then you can call the function `unlock()` to deserialize the transaction data, transfer a certain amount of token to the target address on the target chain, and complete the cross-chain contract invocation.
