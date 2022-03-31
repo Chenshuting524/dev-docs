@@ -1,14 +1,12 @@
 <h1 align="center">Guidelines for Developing</h1>
 
 Chains must only be deployed with one CCM contract to implement cross-chain features. For normal running, all the business logic contracts have to interconnect with the CCM contract via the interfaces offered by the CCM contract. See the following for a detailed description or reference to the complete code of the CCM contract.
-> [!Note|style:flat|label:Notice]
-> To implement cross-chain features, you need to ensure that the cross-chain methods in your business logic contracts have authorized CCM of Poly.
+
 
 ### Step1. Mapping asset
 
-In addition to verifying the existence of transactions through the CCM contract, the business logic contract needs to ensure the accuracy of the asset relationship in the transaction. 
-Therefore, the business contract should maintain both the **asset mapping** and **business logic contract mapping**. 
-Asset hash is mapped from the source chain to the target chain, and target chain ID is mapped to the business logic contract address on the target chain.
+The business contract should maintain both the **asset mapping** and **business logic contract mapping**. 
+With the chain ID mapped to the business logic contract address on the target chain, asset hash is mapped from the source chain to the target chain.
 
 #### Example:
 
@@ -44,7 +42,7 @@ contract LockProxy is Ownable {
 
 ### Step2. Requesting transaction
 
-Now, you should complete a method to invoke the cross-chain function in the CCM. 
+Now, you should complete a method to invoke the cross-chain function in the CCM. You can also see specifics in the [source code](https://dev-docs.poly.network/new_chain/side_chain/contracts.html#step3-pushing-transactions). 
 
 
 ````solidity
@@ -58,7 +56,7 @@ Now, you should complete a method to invoke the cross-chain function in the CCM.
 function crossChain (uint64 toChainId, bytes calldata toContract, bytes calldata method, bytes calldata txData) whenNotPaused external returns (bool)
 ````
 
-- The `rawParam`, which contains **transaction hash**, `msg.sender`, **target chain ID**, **business logic contract** on target chain, the **target method** to be invoked, and the **serialized transaction data** that has already been constructed in the business logic contract, should be called to request a transaction. 
+- Function `crossChain`, including information of **target chain ID**, **target address**, **transaction hash** and **transaction data**, is invoked by `Lock` and emits `LockEvent` that contains  **asset contract address** on the source chain, **target chain ID**, **target address,** and **amount of token** to be transferred.
 - Then put the hash of `rawParam` into storage to prove the cross-chain transaction.
 
 #### Example:
@@ -99,13 +97,13 @@ function lock(address fromAssetHash, uint64 toChainId, bytes memory toAddress, u
 }
 ```
 
-- The `rawParam` is invoked by **users** and emits lock events involving **asset contract address** on the source chain, **target chain ID**, **target address,** and **amount of token** to be transferred. By calling this method, the business logic contract will **lock** a certain amount of valuable assets.
-- The CCM contract transfers the parameters of transaction data to the target chain based on block generation on the source chain;
-- The serialized **transaction data**, **chain ID**, **business logic contract address** of target chain, and the method needing to be called on the target chain is sent through `crossChain()` in the CCM contract.
+- By calling this method, the business logic contract will **lock** a certain amount of valuable assets.
+
 
 ### Step3. Verifying and executing
 
-Verifying and executing are invoked by the relayer, but in some cases, you could also invoke them by yourself if you get the valid block information from Poly. See [here](https://dev-docs.poly.network/new_chain/side_chain/contracts.html#step4-verifying--executing) for deploy methods.  
+You need to deploy a methods to parse and execut the transaction information transferred by `verifyHeaderAndExecuteTx()`. 
+- `verifyHeaderAndExecuteTx()` in CCM contracts determines the **legitimacy** of cross-chain transaction information and resolves the parameters of transaction data from the Poly chain transaction Merkle proof and `crossStateRoot` contained in the block header. 
 
 ````solidity
 /*  
@@ -120,7 +118,10 @@ Verifying and executing are invoked by the relayer, but in some cases, you could
 function verifyHeaderAndExecuteTx (bytes memory proof, bytes memory rawHeader, bytes memory headerProof, bytes memory curRawHeader, bytes memory headerSig) whenNotPaused public returns (bool)
 ````
 
-  - After calling the method, you need to check the return value. Only if the return value is true will the whole cross-chain transaction be executed successfully. 
+> [!Note|style:flat|label:Notice]
+> Only if the return value of `verifyHeaderAndExecuteTx()`is true will the whole cross-chain transaction be executed successfully. 
+
+Here is an example:
 
 #### Example:
 
@@ -150,6 +151,5 @@ function unlock(bytes memory argsBs, bytes memory fromContractAddr, uint64 fromC
 }
 ```
 
-- `UnlockEvent` is invoked by the **CCM contract**. It deserializes the transaction data and invokes the asset contract to release the tokens to the target address.
-- `verifyHeaderAndExecuteTx()` in CCM contracts determines the **legitimacy** of cross-chain transaction information and resolves the parameters of transaction data from the Poly chain transaction Merkle proof and `crossStateRoot` contained in the block header. 
-- Then call the function `unlock()` to deserialize the transaction data, transfer a certain amount of token to the target address on the target chain, and complete the cross-chain contract invocation.
+
+- Call the function `unlock()` to deserialize the transaction data, transfer a certain amount of token to the target address on the target chain, and complete the cross-chain contract invocation.
