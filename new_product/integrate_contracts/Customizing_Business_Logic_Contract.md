@@ -114,7 +114,7 @@ A methods is required to parse and execut the transaction information transferre
 function verifyHeaderAndExecuteTx (bytes memory proof, bytes memory rawHeader, bytes memory headerProof, bytes memory curRawHeader, bytes memory headerSig) whenNotPaused public returns (bool)
 ````
 
-- The customized method shoud be conformed to the called format by `verifyHeaderAndExecuteTx`, see following:
+- The customized method shoud be conformed to the format called by `verifyHeaderAndExecuteTx`, see following:
 ````solidity
  // The returnData will be bytes32, the last byte must be 01;
 (success, returnData) = _toContract.call(abi.encodePacked(bytes4(keccak256(abi.encodePacked(_method, "(bytes,bytes,uint64)"))), abi.encode(_args, _fromContractAddr, _fromChainId)));
