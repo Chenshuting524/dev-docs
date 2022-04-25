@@ -15,10 +15,10 @@ DevNet for developers provides debugging and testing for your code. The access s
 - Register to Poly Chain and sync genesis block header. The details are as follows:
 
   - **Register to Poly Chain**
-  1. Call entry function `RegisterSideChain`
-  2. Call entry function `ApproveRegisterSideChain`
+    - Call entry function `RegisterSideChain`
+    - Call entry function `ApproveRegisterSideChain`
   - **Sync genesis block header**
-  1. Call entry function `SyncSideChainGenesisHeader`
+    - Call entry function `SyncSideChainGenesisHeader`
 
 > [!Note|style:flat|label:Notice]
 > Registration is currently completed by the `Poly team` with the trusted account.
